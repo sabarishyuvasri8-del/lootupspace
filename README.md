@@ -2,6 +2,8 @@
 
 > **"Your space, back. Your stuff, safe."**  
 > An on-demand personal storage web platform & PWA engineered for space-constrained residents in Indian metro cities (Bengaluru, Mumbai, Chennai first).
+>
+> Live Demo: https://lootupspace.vercel.app
 
 ---
 
@@ -78,7 +80,7 @@ lootupspace/
 
 ### 1. Clone & Install Dependencies
 ```bash
-git clone https://github.com/lootupspace/lootupspace.git
+git clone https://github.com/sabarishyuvasri8-del/lootupspace.git
 cd lootupspace
 npm install
 ```
