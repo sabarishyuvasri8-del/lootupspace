@@ -1,0 +1,17 @@
+{
+  "name": "Lootupspace - Doorstep Personal Storage",
+  "short_name": "Lootupspace",
+  "description": "On-demand personal storage service for Indian metro cities. We pickup, store, and return your items.",
+  "start_url": "/customer",
+  "display": "standalone",
+  "background_color": "#0B1120",
+  "theme_color": "#0284C7",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

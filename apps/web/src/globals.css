@@ -1,0 +1,177 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f8fafc;
+    --foreground: #0f172a;
+    --surface-card: #ffffff;
+    --surface-raised: #f1f5f9;
+    --hairline: rgba(15, 23, 42, 0.08);
+    /* Enable smooth height interpolation to auto where supported */
+    interpolate-size: allow-keywords;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* High-contrast accessible focus ring fallback */
+  :where(a[href], button, summary, input, select, textarea, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: 2px solid #0284c7;
+    outline-offset: 2px;
+  }
+
+  /* Monospace tabular figures across all metrics */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Visually hidden utility keeping focusable skip-links accessible on keyboard focus */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+.skip-link:focus-visible {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+  outline: 2px solid #38bdf8;
+  outline-offset: 2px;
+}
+
+/* Strictly for off-screen, below-the-fold sections to defer rendering cost */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto none auto 36rem;
+}
+
+.cv-auto-lg {
+  content-visibility: auto;
+  contain-intrinsic-size: auto none auto 48rem;
+}
+
+/* Native <dialog> top-layer overlay styling */
+dialog.modal-dialog {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: min(calc(100vw - 2rem), 48rem);
+  max-height: calc(100dvh - 2rem);
+  width: 100%;
+  color: inherit;
+  margin: auto;
+}
+
+dialog.modal-dialog::backdrop {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+/* Native <details> FAQ disclosure styling and expansion animation */
+.faq-disclosure::details-content {
+  block-size: 0;
+  overflow-y: clip;
+  transition: block-size 0.28s cubic-bezier(0.16, 1, 0.3, 1), content-visibility 0.28s allow-discrete;
+}
+
+.faq-disclosure[open]::details-content {
+  block-size: auto;
+}
+
+.faq-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-disclosure[open] .faq-chevron {
+  transform: rotate(180deg);
+}
+
+/* Case-by-case reduced-motion rules */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .faq-disclosure::details-content,
+  .faq-chevron {
+    transition: none !important;
+  }
+
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-fade-in-down,
+  .animate-scale-in,
+  .animate-slide-in-right {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .animate-pulse,
+  .animate-ping,
+  .animate-bounce,
+  .animate-pulse-glow,
+  .animate-float {
+    animation: none !important;
+  }
+
+  .animate-spin {
+    animation-duration: 6s !important;
+  }
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  dialog.modal-dialog[open] {
+    position: static;
+    inset: auto;
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    overflow: visible;
+  }
+  dialog.modal-dialog[open]::backdrop {
+    display: none;
+  }
+  #printable-invoice, #printable-invoice * {
+    visibility: visible;
+  }
+  #printable-invoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}

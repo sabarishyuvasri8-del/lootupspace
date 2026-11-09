@@ -1,0 +1,22 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY packages/shared/package*.json ./packages/shared/
+COPY packages/database/package*.json ./packages/database/
+COPY apps/api/package*.json ./apps/api/
+
+RUN npm install
+
+COPY packages/shared ./packages/shared
+COPY packages/database ./packages/database
+COPY apps/api ./apps/api
+
+RUN npm run build --workspace=packages/shared
+RUN cd packages/database && npx prisma generate && npm run build
+RUN npm run build --workspace=apps/api
+
+EXPOSE 4000
+CMD ["npm", "run", "start", "--workspace=apps/api"]
+

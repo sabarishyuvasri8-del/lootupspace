@@ -1,0 +1,159 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Lootupspace Platform API",
+    "version": "1.0.0",
+    "description": "On-demand personal storage platform for Indian metro cities. Provides complete REST endpoints for Customers, Drivers, Warehouse Staff, and Operations Admins."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000/api/v1",
+      "description": "Local API Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/send-otp": {
+      "post": {
+        "summary": "Send phone login OTP",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone": { "type": "string", "example": "+919876543210" }
+                },
+                "required": ["phone"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OTP sent successfully" }
+        }
+      }
+    },
+    "/auth/verify-otp": {
+      "post": {
+        "summary": "Verify OTP and obtain JWT",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "phone": { "type": "string", "example": "+919876543210" },
+                  "otp": { "type": "string", "example": "123456" }
+                },
+                "required": ["phone", "otp"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "JWT token and user session returned" }
+        }
+      }
+    },
+    "/auth/demo-login": {
+      "post": {
+        "summary": "Instant 1-click login for test roles (CUSTOMER, DRIVER, WAREHOUSE, ADMIN)",
+        "tags": ["Auth"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": { "type": "string", "enum": ["CUSTOMER", "DRIVER", "WAREHOUSE", "ADMIN"], "example": "CUSTOMER" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Authenticated session for demo role" }
+        }
+      }
+    },
+    "/items": {
+      "post": {
+        "summary": "Create new storage item with photos and dimensions",
+        "tags": ["Items"],
+        "responses": { "201": { "description": "Storage item created with size tier and QR code" } }
+      },
+      "get": {
+        "summary": "List digital inventory items of authenticated customer",
+        "tags": ["Items"],
+        "responses": { "200": { "description": "List of items with photos and QR" } }
+      }
+    },
+    "/pickups": {
+      "post": {
+        "summary": "Schedule pickup and lock slot",
+        "tags": ["Pickups"],
+        "responses": { "201": { "description": "Pickup booking confirmed with 4-digit handover OTP" } }
+      },
+      "get": {
+        "summary": "List customer pickup bookings",
+        "tags": ["Pickups"],
+        "responses": { "200": { "description": "Bookings with live timeline and driver details" } }
+      }
+    },
+    "/returns": {
+      "post": {
+        "summary": "Request return delivery for stored items",
+        "tags": ["Returns"],
+        "responses": { "201": { "description": "Return delivery scheduled with delivery OTP" } }
+      }
+    },
+    "/warehouse/scan/{qrCode}": {
+      "get": {
+        "summary": "Scan box QR on warehouse intake and suggest best bin",
+        "tags": ["Warehouse"],
+        "responses": { "200": { "description": "Item details and suggested shelf location" } }
+      }
+    },
+    "/driver/jobs": {
+      "get": {
+        "summary": "Get today's assigned pickups and returns for driver",
+        "tags": ["Driver"],
+        "responses": { "200": { "description": "List of routes and customer stops" } }
+      }
+    },
+    "/pricing/calculate": {
+      "post": {
+        "summary": "Live pricing calculation engine with GST and addons",
+        "tags": ["Pricing"],
+        "responses": { "200": { "description": "Complete breakdown of monthly and one-time fees" } }
+      }
+    },
+    "/admin/stats": {
+      "get": {
+        "summary": "Executive KPI overview and revenue analytics",
+        "tags": ["Admin"],
+        "responses": { "200": { "description": "MRR, utilization, customer counts, chart data" } }
+      }
+    }
+  }
+}
+

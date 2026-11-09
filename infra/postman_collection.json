@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "Lootupspace API Suite",
+    "description": "Comprehensive Postman collection covering all RESTful APIs for Lootupspace (Customer, Driver, Warehouse, Admin).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Authentication",
+      "item": [
+        {
+          "name": "Send Phone OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919876543210\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/send-otp", "host": ["{{baseUrl}}"], "path": ["auth", "send-otp"] }
+          }
+        },
+        {
+          "name": "Verify OTP & Obtain JWT",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919876543210\",\n  \"otp\": \"123456\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/verify-otp", "host": ["{{baseUrl}}"], "path": ["auth", "verify-otp"] }
+          }
+        },
+        {
+          "name": "Demo 1-Click Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"CUSTOMER\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/demo-login", "host": ["{{baseUrl}}"], "path": ["auth", "demo-login"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Pricing & Serviceability",
+      "item": [
+        {
+          "name": "Live Price Calculation Engine",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"sizeTier\": \"MEDIUM_BOX\",\n      \"quantity\": 2,\n      \"packingRequired\": true\n    }\n  ],\n  \"commitmentMonths\": 6,\n  \"priorityPickup\": false,\n  \"couponCode\": \"WELCOME100\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pricing/calculate", "host": ["{{baseUrl}}"], "path": ["pricing", "calculate"] }
+          }
+        },
+        {
+          "name": "Check Pincode Serviceability",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/pricing/check-pincode/560038", "host": ["{{baseUrl}}"], "path": ["pricing", "check-pincode", "560038"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Storage Items & Inventory",
+      "item": [
+        {
+          "name": "Add Item with Photos",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acoustic Guitar in Hard Case\",\n  \"category\": \"MUSICAL_INSTRUMENTS\",\n  \"length\": 110,\n  \"width\": 45,\n  \"height\": 20,\n  \"declaredValueInr\": 25000,\n  \"isFragile\": true,\n  \"packingRequired\": true,\n  \"photos\": [\"https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600\"]\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/items", "host": ["{{baseUrl}}"], "path": ["items"] }
+          }
+        },
+        {
+          "name": "List Digital Inventory Items",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/items", "host": ["{{baseUrl}}"], "path": ["items"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Pickups & Returns",
+      "item": [
+        {
+          "name": "Schedule Doorstep Pickup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"itemIds\": [\"item_001\"],\n  \"slotDate\": \"2026-11-15\",\n  \"slotStartTime\": \"10:00 AM\",\n  \"slotEndTime\": \"12:00 PM\",\n  \"commitmentMonths\": 3\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/pickups", "host": ["{{baseUrl}}"], "path": ["pickups"] }
+          }
+        },
+        {
+          "name": "Request Item Return",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"itemIds\": [\"item_001\"],\n  \"slotDate\": \"2026-11-18\",\n  \"slotTime\": \"02:00 PM - 04:00 PM\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/returns", "host": ["{{baseUrl}}"], "path": ["returns"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Warehouse & Driver",
+      "item": [
+        {
+          "name": "Scan QR for Warehouse Intake",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/warehouse/scan/LUP-ITM-BLR-00192", "host": ["{{baseUrl}}"], "path": ["warehouse", "scan", "LUP-ITM-BLR-00192"] }
+          }
+        },
+        {
+          "name": "Driver Today's Assigned Jobs",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/driver/jobs", "host": ["{{baseUrl}}"], "path": ["driver", "jobs"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Admin & KPIs",
+      "item": [
+        {
+          "name": "Executive Platform Telemetry Stats",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{authToken}}" }],
+            "url": { "raw": "{{baseUrl}}/admin/stats", "host": ["{{baseUrl}}"], "path": ["admin", "stats"] }
+          }
+        }
+      ]
+    }
+  ]
+}
+

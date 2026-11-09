@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: lootup-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: lootup
+      POSTGRES_PASSWORD: lootup123_secure_password
+      POSTGRES_DB: lootupspace
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lootup -d lootupspace"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: lootup-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  api:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.api
+    container_name: lootup-api
+    restart: always
+    environment:
+      PORT: 4000
+      NODE_ENV: production
+      DATABASE_URL: postgresql://lootup:lootup123_secure_password@postgres:5432/lootupspace?schema=public
+      JWT_SECRET: lootup_super_secret_production_key_2026
+      REDIS_URL: redis://redis:6379
+      RAZORPAY_KEY_ID: rzp_test_mock_lootup
+      RAZORPAY_KEY_SECRET: rzp_secret_mock_lootup
+    ports:
+      - "4000:4000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  web:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.web
+    container_name: lootup-web
+    restart: always
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: http://localhost:4000/api/v1
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:
+  redis_data:
+

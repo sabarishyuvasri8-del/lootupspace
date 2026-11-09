@@ -1,0 +1,768 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CUSTOMER
+  DRIVER
+  WAREHOUSE
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DEACTIVATED
+}
+
+enum KycStatus {
+  NOT_SUBMITTED
+  PENDING_REVIEW
+  VERIFIED
+  REJECTED
+}
+
+enum ItemCategory {
+  CLOTHES
+  FURNITURE
+  APPLIANCES
+  ELECTRONICS
+  BOOKS
+  DOCUMENTS
+  SPORTS_FITNESS
+  MUSICAL_INSTRUMENTS
+  VEHICLES_ACCESSORIES
+  KITCHENWARE
+  FRAGILE_ART
+  OTHERS
+}
+
+enum SizeTier {
+  SMALL_BOX
+  MEDIUM_BOX
+  LARGE_BOX
+  EXTRA_LARGE_FURNITURE
+  CUSTOM
+}
+
+enum DimensionUnit {
+  CM
+  INCH
+  FT
+}
+
+enum StorageItemStatus {
+  DRAFT
+  SCHEDULED_FOR_PICKUP
+  PICKED_UP
+  IN_TRANSIT_TO_WAREHOUSE
+  RECEIVED_AT_WAREHOUSE
+  STORED
+  RETURN_REQUESTED
+  OUT_FOR_DELIVERY
+  RETURNED
+  DISPOSED_OR_DONATED
+}
+
+enum PickupStatus {
+  BOOKED
+  DRIVER_ASSIGNED
+  DRIVER_ON_THE_WAY
+  ARRIVED_AT_CUSTOMER
+  PICKED_UP
+  IN_TRANSIT
+  RECEIVED_AT_WAREHOUSE
+  CANCELLED
+}
+
+enum ReturnStatus {
+  REQUESTED
+  DRIVER_ASSIGNED
+  ITEMS_RETRIEVED
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAUSED
+  OVERDUE
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum InvoiceStatus {
+  DRAFT
+  ISSUED
+  PAID
+  OVERDUE
+  VOID
+}
+
+enum PhotoType {
+  CUSTOMER
+  PICKUP
+  WAREHOUSE_INSPECTION
+  DELIVERY_PROOF
+}
+
+enum VehicleType {
+  TWO_WHEELER
+  THREE_WHEELER_EV
+  MINI_TRUCK_TATA_ACE
+  LARGE_TRUCK
+}
+
+enum ZoneType {
+  STANDARD
+  CLIMATE_CONTROLLED
+  HIGH_VALUE_VAULT
+  BULKY_FURNITURE
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model User {
+  id           String      @id @default(uuid())
+  phone        String      @unique
+  email        String?     @unique
+  name         String?
+  role         Role        @default(CUSTOMER)
+  status       UserStatus  @default(ACTIVE)
+  kycStatus    KycStatus   @default(NOT_SUBMITTED)
+  referralCode String      @unique
+  avatarUrl    String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  deletedAt    DateTime?
+
+  addresses          Address[]
+  storageItems       StorageItem[]
+  pickupRequests     PickupRequest[]
+  returnRequests     ReturnRequest[]
+  subscriptions      Subscription[]
+  invoices           Invoice[]
+  payments           Payment[]
+  walletTransactions WalletTransaction[]
+  supportTickets     SupportTicket[]
+  driverProfile      Driver?
+  auditLogs          AuditLog[]
+  referralsMade      Referral[]          @relation("ReferrerRelation")
+  referralReceived   Referral?           @relation("ReferredUserRelation")
+  claims             Claim[]
+  notifications      Notification[]
+
+  @@index([phone])
+  @@index([role])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  label     String   @default("Home")
+  line1     String
+  line2     String?
+  landmark  String?
+  city      String
+  state     String
+  pincode   String
+  lat       Float    @default(12.9716)
+  lng       Float    @default(77.5946)
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pickupRequests PickupRequest[]
+  returnRequests ReturnRequest[]
+
+  @@index([userId])
+  @@index([pincode])
+}
+
+model City {
+  id        String   @id @default(uuid())
+  code      String   @unique // e.g. BLR, BOM, MAA
+  name      String
+  state     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  serviceablePincodes ServiceablePincode[]
+  warehouses          Warehouse[]
+}
+
+model ServiceablePincode {
+  id         String   @id @default(uuid())
+  cityId     String
+  pincode    String   @unique
+  hubName    String
+  isServiceable Boolean @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  city City @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@index([pincode])
+}
+
+model Warehouse {
+  id        String   @id @default(uuid())
+  cityId    String
+  name      String
+  code      String   @unique // e.g. WH-BLR-01
+  address   String
+  totalCubicFeet Float @default(50000.0)
+  usedCubicFeet  Float @default(0.0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  city  City   @relation(fields: [cityId], references: [id])
+  zones Zone[]
+
+  @@index([cityId])
+}
+
+model Zone {
+  id          String   @id @default(uuid())
+  warehouseId String
+  code        String   // e.g. ZONE-A
+  name        String
+  zoneType    ZoneType @default(STANDARD)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+  racks     Rack[]
+
+  @@unique([warehouseId, code])
+}
+
+model Rack {
+  id        String   @id @default(uuid())
+  zoneId    String
+  code      String   // e.g. RACK-01
+  levels    Int      @default(4)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  zone Zone  @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+  bins Bin[]
+
+  @@unique([zoneId, code])
+}
+
+model Bin {
+  id            String   @id @default(uuid())
+  rackId        String
+  code          String   @unique // e.g. A-03-R2-B5
+  maxCubicFeet  Float    @default(25.0)
+  usedCubicFeet Float    @default(0.0)
+  isAvailable   Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  rack         Rack          @relation(fields: [rackId], references: [id], onDelete: Cascade)
+  storageItems StorageItem[]
+
+  @@index([code])
+}
+
+model StorageItem {
+  id                   String            @id @default(uuid())
+  userId               String
+  name                 String
+  category             ItemCategory      @default(OTHERS)
+  description          String?
+  length               Float             @default(50.0)
+  width                Float             @default(40.0)
+  height               Float             @default(30.0)
+  unit                 DimensionUnit     @default(CM)
+  weightKg             Float             @default(5.0)
+  quantity             Int               @default(1)
+  declaredValueInr     Float             @default(2000.0)
+  isFragile            Boolean           @default(false)
+  needsSpecialHandling Boolean           @default(false)
+  packingRequired      Boolean           @default(false)
+  notes                String?
+  sizeTier             SizeTier          @default(MEDIUM_BOX)
+  cubicFeet            Float             @default(2.1)
+  monthlyStorageFeeInr Float             @default(399.0)
+  qrCode               String            @unique
+  status               StorageItemStatus @default(DRAFT)
+  binId                String?
+  storedAt             DateTime?
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  deletedAt            DateTime?
+
+  user              User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bin               Bin?                @relation(fields: [binId], references: [id])
+  photos            ItemPhoto[]
+  pickupRequestItems PickupRequestItem[]
+  returnRequestItems ReturnRequestItem[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([qrCode])
+  @@index([category])
+}
+
+model ItemPhoto {
+  id        String    @id @default(uuid())
+  itemId    String
+  url       String
+  type      PhotoType @default(CUSTOMER)
+  caption   String?
+  takenAt   DateTime  @default(now())
+
+  item StorageItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@index([itemId])
+}
+
+model PickupRequest {
+  id               String       @id @default(uuid())
+  bookingNumber    String       @unique // e.g. LUP-PK-2026-0001
+  userId           String
+  addressId        String
+  slotDate         DateTime
+  slotStartTime    String
+  slotEndTime      String
+  status           PickupStatus @default(BOOKED)
+  driverId         String?
+  pickupOtp        String       // 4-digit verification code
+  notes            String?
+  totalAmount      Float        @default(0.0)
+  pickupFee        Float        @default(149.0)
+  monthlyStorage   Float        @default(399.0)
+  commitmentMonths Int          @default(3)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  deletedAt        DateTime?
+
+  user               User                @relation(fields: [userId], references: [id])
+  address            Address             @relation(fields: [addressId], references: [id])
+  driver             Driver?             @relation(fields: [driverId], references: [id])
+  items              PickupRequestItem[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([bookingNumber])
+  @@index([slotDate])
+}
+
+model PickupRequestItem {
+  id        String @id @default(uuid())
+  requestId String
+  itemId    String
+
+  request PickupRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  item    StorageItem   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([requestId, itemId])
+}
+
+model ReturnRequest {
+  id                    String       @id @default(uuid())
+  returnNumber          String       @unique // e.g. LUP-RT-2026-0001
+  userId                String
+  addressId             String
+  slotDate              DateTime
+  slotTime              String
+  status                ReturnStatus @default(REQUESTED)
+  driverId              String?
+  deliveryOtp           String       // 4-digit verification code
+  feeAmount             Float        @default(149.0)
+  notes                 String?
+  proofPhotoUrl         String?
+  recipientSignatureUrl String?
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  deletedAt             DateTime?
+
+  user   User                @relation(fields: [userId], references: [id])
+  address Address            @relation(fields: [addressId], references: [id])
+  driver Driver?             @relation(fields: [driverId], references: [id])
+  items  ReturnRequestItem[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([returnNumber])
+}
+
+model ReturnRequestItem {
+  id        String @id @default(uuid())
+  requestId String
+  itemId    String
+
+  request ReturnRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  item    StorageItem   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  @@unique([requestId, itemId])
+}
+
+model Plan {
+  id               String   @id @default(uuid())
+  name             String
+  code             String   @unique
+  commitmentMonths Int      @default(3)
+  discountPercent  Float    @default(0.0)
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  subscriptions Subscription[]
+}
+
+model PricingTier {
+  id             String   @id @default(uuid())
+  sizeTier       SizeTier @unique
+  name           String
+  maxCubicFeet   Float
+  monthlyRateInr Float
+  cityCode       String?  // Null means default for all cities
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Coupon {
+  id                 String    @id @default(uuid())
+  code               String    @unique
+  description        String
+  discountPercent    Float?
+  flatDiscountInr    Float?
+  maxDiscountInr     Float?
+  minOrderAmountInr  Float?
+  expiryDate         DateTime?
+  usageLimit         Int?
+  usedCount          Int       @default(0)
+  isActive           Boolean   @default(true)
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  redemptions CouponRedemption[]
+
+  @@index([code])
+}
+
+model CouponRedemption {
+  id        String   @id @default(uuid())
+  couponId  String
+  userId    String
+  orderId   String?
+  discount  Float
+  createdAt DateTime @default(now())
+
+  coupon Coupon @relation(fields: [couponId], references: [id], onDelete: Cascade)
+
+  @@index([couponId])
+  @@index([userId])
+}
+
+model Subscription {
+  id                     String             @id @default(uuid())
+  userId                 String
+  planId                 String
+  commitmentMonths       Int                @default(3)
+  monthlyStorageFee      Float
+  startDate              DateTime           @default(now())
+  endDate                DateTime?
+  nextBillingDate        DateTime
+  status                 SubscriptionStatus @default(ACTIVE)
+  razorpaySubscriptionId String?            @unique
+  autoDebitEnabled       Boolean            @default(true)
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan Plan @relation(fields: [planId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+}
+
+model Invoice {
+  id            String        @id @default(uuid())
+  invoiceNumber String        @unique // e.g. INV-2026-0001
+  userId        String
+  amount        Float
+  taxAmount     Float         @default(0.0) // 18% GST
+  totalAmount   Float
+  periodStart   DateTime
+  periodEnd     DateTime
+  status        InvoiceStatus @default(ISSUED)
+  pdfUrl        String?
+  paidAt        DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lines    InvoiceLine[]
+  payments Payment[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([invoiceNumber])
+}
+
+model InvoiceLine {
+  id          String   @id @default(uuid())
+  invoiceId   String
+  description String
+  quantity    Int      @default(1)
+  unitPrice   Float
+  totalPrice  Float
+  taxRate     Float    @default(18.0)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  userId            String
+  invoiceId         String?
+  amount            Float
+  currency          String        @default("INR")
+  status            PaymentStatus @default(PENDING)
+  razorpayOrderId   String?       @unique
+  razorpayPaymentId String?       @unique
+  razorpaySignature String?
+  paymentMethod     String?       // UPI, CARD, NETBANKING, WALLET
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id])
+  invoice Invoice? @relation(fields: [invoiceId], references: [id])
+  refunds Refund[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([razorpayOrderId])
+}
+
+model Refund {
+  id              String   @id @default(uuid())
+  paymentId       String
+  amount          Float
+  reason          String
+  razorpayRefundId String?  @unique
+  status          String   @default("PROCESSED")
+  createdAt       DateTime @default(now())
+
+  payment Payment @relation(fields: [paymentId], references: [id])
+}
+
+model WalletTransaction {
+  id          String   @id @default(uuid())
+  userId      String
+  amount      Float    // Positive for credit, negative for debit
+  balanceAfter Float
+  description String
+  referenceId String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Driver {
+  id             String      @id @default(uuid())
+  userId         String      @unique
+  vehicleType    VehicleType @default(MINI_TRUCK_TATA_ACE)
+  vehicleNumber  String
+  licenseNumber  String
+  isAvailable    Boolean     @default(true)
+  currentLat     Float?      @default(12.9716)
+  currentLng     Float?      @default(77.5946)
+  totalTripsDone Int         @default(0)
+  ratingAverage  Float       @default(4.9)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pickupRequests PickupRequest[]
+  returnRequests ReturnRequest[]
+  locationLogs   DriverLocationLog[]
+
+  @@index([userId])
+}
+
+model DriverLocationLog {
+  id        String   @id @default(uuid())
+  driverId  String
+  lat       Float
+  lng       Float
+  speed     Float?
+  heading   Float?
+  timestamp DateTime @default(now())
+
+  driver Driver @relation(fields: [driverId], references: [id], onDelete: Cascade)
+
+  @@index([driverId, timestamp])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  channel   String   @default("SMS") // SMS, WHATSAPP, EMAIL, PUSH
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+model NotificationTemplate {
+  id        String   @id @default(uuid())
+  eventKey  String   @unique // e.g. PICKUP_CONFIRMED, DRIVER_ASSIGNED
+  title     String
+  smsBody   String
+  waBody    String
+  emailBody String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SupportTicket {
+  id           String         @id @default(uuid())
+  ticketNumber String         @unique // e.g. TKT-2026-0001
+  userId       String
+  subject      String
+  category     String
+  priority     TicketPriority @default(MEDIUM)
+  status       TicketStatus   @default(OPEN)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  user     User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages TicketMessage[]
+
+  @@index([userId])
+  @@index([status])
+}
+
+model TicketMessage {
+  id         String   @id @default(uuid())
+  ticketId   String
+  senderId   String
+  senderName String
+  senderRole Role     @default(CUSTOMER)
+  message    String
+  createdAt  DateTime @default(now())
+
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  @@index([ticketId])
+}
+
+model InsurancePolicy {
+  id             String   @id @default(uuid())
+  tierCode       String   @unique // BASIC, SILVER, GOLD, PLATINUM
+  name           String
+  coverageAmount Float
+  monthlyPremium Float
+  description    String
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Claim {
+  id           String   @id @default(uuid())
+  userId       String
+  itemId       String?
+  claimNumber  String   @unique // e.g. CLM-2026-0001
+  claimAmount  Float
+  incidentDate DateTime
+  description  String
+  proofPhotos  String[]
+  status       String   @default("PENDING_REVIEW") // PENDING_REVIEW, APPROVED, REJECTED, PAID
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Referral {
+  id             String   @id @default(uuid())
+  referrerUserId String
+  referredUserId String   @unique
+  rewardCredit   Float    @default(200.0)
+  status         String   @default("CREDITED")
+  createdAt      DateTime @default(now())
+
+  referrer User @relation("ReferrerRelation", fields: [referrerUserId], references: [id])
+  referred User @relation("ReferredUserRelation", fields: [referredUserId], references: [id])
+
+  @@index([referrerUserId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  resource  String
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([action])
+  @@index([createdAt])
+}
+
+model WaitlistLead {
+  id        String   @id @default(uuid())
+  pincode   String
+  city      String?
+  name      String?
+  phone     String
+  email     String?
+  createdAt DateTime @default(now())
+
+  @@index([pincode])
+}
+

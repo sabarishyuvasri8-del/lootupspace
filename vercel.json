@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "npm install",
+  "buildCommand": "npm run prisma:generate && npm run build --workspace=packages/shared && npm run build --workspace=packages/database && npm run build --workspace=apps/web",
+  "outputDirectory": "apps/web/dist",
+  "rewrites": [
+    {
+      "source": "/((?!assets/|[^/]+\\.[a-zA-Z0-9]+$).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+!.env.example
+!infra/.env.example
+
+# Deployment & tooling
+.vercel
+.netlify
+.agents/
+coverage/
+
+# Logs & OS files
+logs/
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

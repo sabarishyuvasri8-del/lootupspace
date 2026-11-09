@@ -1,0 +1,44 @@
+name: Lootupspace CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Monorepo Dependencies
+        run: npm install
+
+      - name: Build Shared Package & Run Pricing Tests
+        run: |
+          npm run build --workspace=packages/shared
+          node --test packages/shared/dist/pricing-engine.test.js
+
+      - name: Generate Prisma Client & Build Database Package
+        run: |
+          cd packages/database && npx prisma generate && npm run build
+
+      - name: Build Core API & Run Integration Tests
+        run: |
+          npm run build --workspace=apps/api
+          npx ts-node apps/api/tests/auth.test.ts
+          npx ts-node apps/api/tests/booking.test.ts
+
+      - name: Build Vite Web App
+        run: |
+          npm run build --workspace=apps/web
+
