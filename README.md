@@ -1,4 +1,4 @@
-# 📦 Lootupspace - Pickup-Based Personal Storage Platform for Indian Metro Cities
+# Lootupspace - Pickup-Based Personal Storage Platform for Indian Metro Cities
 
 > **"Your space, back. Your stuff, safe."**  
 > An on-demand personal storage web platform & PWA engineered for space-constrained residents in Indian metro cities (Bengaluru, Mumbai, Chennai first).
@@ -7,7 +7,7 @@
 
 ---
 
-## 🌟 1. Product Overview
+## 1. Product Overview
 
 In high-rent Indian metros, square footage in apartments is prohibitively expensive. Residents struggle with seasonal clothes, heavy quilts, books, sports gear, appliances, furniture, and archives that crowd living spaces.
 
@@ -20,7 +20,7 @@ In high-rent Indian metros, square footage in apartments is prohibitively expens
 
 ---
 
-## 👥 2. User Roles & Demo Credentials
+## 2. User Roles & Demo Credentials
 
 The platform features role-based access control (RBAC) across 4 dedicated interfaces. A **Role Switcher Banner** is pinned to the top of the app for instant 1-click role toggling during demonstrations.
 
@@ -33,7 +33,7 @@ The platform features role-based access control (RBAC) across 4 dedicated interf
 
 ---
 
-## 🏗️ 3. Architecture & Monorepo Structure
+## 3. Architecture & Monorepo Structure
 
 ```
 lootupspace/
@@ -72,7 +72,7 @@ lootupspace/
 
 ---
 
-## ⚡ 4. Quickstart Guide
+## 4. Quickstart Guide
 
 ### Prerequisites
 - Node.js `v20+` or `v25+`
@@ -122,7 +122,7 @@ npm run dev:web
 
 ---
 
-## 🐳 5. Running with Docker Compose
+## 5. Running with Docker Compose
 
 To run PostgreSQL, Redis, Core API, and Vite Web together:
 
@@ -139,7 +139,7 @@ docker-compose up --build
 
 ---
 
-## 💰 6. Pricing Engine Specification
+## 6. Pricing Engine Specification
 
 | Size Tier | Volume Capacity | Dimensions Guide | Monthly Rate (INR) |
 | :--- | :--- | :--- | :--- |
@@ -159,7 +159,7 @@ docker-compose up --build
 
 ---
 
-## 📱 7. End-to-End User Journey Walkthrough
+## 7. End-to-End User Journey Walkthrough
 
 1. **Public Marketing & Calculator**: Visit `http://localhost:3000/pricing` to simulate box sizes, custom dimensions (cm/inch/ft), and addons.
 2. **Customer Sign-in**: Visit `http://localhost:3000/auth/login` (or tap Customer in top banner).
@@ -174,7 +174,7 @@ docker-compose up --build
 
 ---
 
-## 🔒 8. Security & Legal Compliance
+## 8. Security & Legal Compliance
 
 - **DPDP Act (2023) Compliance**: Grounded in India's Digital Personal Data Protection Act with clear consent capture, encrypted KYC document storage, and account deletion protocols.
 - **Indian Contract Act (1872)**: Governed under Chapter IX Bailment provisions. Includes specific possessory lien clauses (Section 170) and a statutory 90-day default notice protocol prior to item auction.
@@ -182,7 +182,7 @@ docker-compose up --build
 
 ---
 
-## 📝 9. Assumptions & Future Roadmap
+## 9. Assumptions & Future Roadmap
 
 ### Assumptions Made
 1. **Initial Metro Coverage**: Bengaluru (Indiranagar, Whitefield, Koramangala), Mumbai (BKC, Andheri, Powai), and Chennai (OMR, Anna Nagar). Other pincodes are handled via priority waitlist capture.
