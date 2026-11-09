@@ -9,7 +9,7 @@ export function RealCustomerStories() {
 
   const stories = [
     {
-      name: 'Pooja Hegde',
+      name: 'Arjun Hegde',
       role: 'Product Designer',
       locality: 'Indiranagar, Bengaluru',
       tag: 'Apartment Space Recovery',
@@ -19,10 +19,10 @@ export function RealCustomerStories() {
       itemsStored: '3 Heavy Wardrobe Boxes + 2 Luggage Trolleys (12.4 cu ft)',
       monthlyCost: '₹598/month',
       spaceGained: '18 sq ft floor space recovered',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80'
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&auto=format&fit=crop&q=80'
     },
     {
-      name: 'Rohan & Sneha Mehta',
+      name: 'Rohan & Kunal Mehta',
       role: 'Fintech Product Lead & Architect',
       locality: 'Hiranandani, Powai, Mumbai',
       tag: 'Lease Gap & Transition',
