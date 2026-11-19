@@ -78,6 +78,9 @@ function RequestReturnContent() {
       });
 
       mockDb.returnRequests.unshift(newReturn);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lootup_db_updated'));
+      }
       setReturnConfirmed(newReturn);
     } catch (err) {
       console.error(err);
@@ -94,14 +97,14 @@ function RequestReturnContent() {
         </div>
 
         <div>
-          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
-            Return Order Scheduled
+          <span className="text-xs font-bold text-lootup-700 bg-lootup-50 px-3 py-1 rounded-full border border-lootup-200">
+            Sent to Warehouse Vault Desk
           </span>
           <h1 id="main-content" tabIndex={-1} className="text-2xl font-semibold text-slate-900 mt-2 text-balance">
-            Return Delivery #{returnConfirmed.returnNumber}
+            Return Order #{returnConfirmed.returnNumber}
           </h1>
           <p className="text-xs text-slate-500 mt-1 text-pretty">
-            Our team will retrieve your items from the vault and deliver them to your doorstep.
+            Received by Warehouse Operations (WH-BLR-01 Indiranagar). Our staff will pull your items from assigned bins and schedule a delivery driver.
           </p>
         </div>
 
@@ -114,7 +117,7 @@ function RequestReturnContent() {
             {returnConfirmed.deliveryOtp}
           </div>
           <span className="text-[11px] text-amber-800 text-pretty">
-            Share this 4-digit code with our driver when receiving your items at your doorstep.
+            Keep this 4-digit code ready. Share it with your driver when receiving your items at your doorstep.
           </span>
         </div>
 
@@ -124,7 +127,13 @@ function RequestReturnContent() {
             <span className="font-bold text-slate-900">{returnConfirmed.slotDate} ({returnConfirmed.slotTime})</span>
           </div>
           <div className="flex justify-between text-slate-600">
-            <span>Items Being Returned:</span>
+            <span>Warehouse Status:</span>
+            <span className="font-bold text-amber-700 bg-amber-100/80 px-2 py-0.5 rounded text-[11px]">
+              WH Retrieval · Pending Driver Allocation
+            </span>
+          </div>
+          <div className="flex justify-between text-slate-600">
+            <span>Items to Retrieve from Bins:</span>
             <span className="font-bold text-slate-900">{returnConfirmed.items.length} items</span>
           </div>
           <div className="flex justify-between text-slate-600">
@@ -133,12 +142,20 @@ function RequestReturnContent() {
           </div>
         </div>
 
-        <SmartLink
-          href="/customer"
-          className="w-full py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center shadow transition-colors duration-150"
-        >
-          Return to Dashboard
-        </SmartLink>
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <SmartLink
+            href="/customer/inventory"
+            className="flex-1 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow transition-colors duration-150"
+          >
+            <span>View Digital Inventory</span>
+          </SmartLink>
+          <SmartLink
+            href="/customer"
+            className="flex-1 py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center transition-colors duration-150"
+          >
+            Go to Customer Dashboard
+          </SmartLink>
+        </div>
       </div>
     );
   }

@@ -41,7 +41,8 @@ const DriverDashboardPage = lazy(() => import('./app/driver/page'));
 const DriverJobDetailPage = lazy(() => import('./app/driver/job/[id]/page'));
 
 // Warehouse pages
-const WarehouseIntakePage = lazy(() => import('./app/warehouse/page'));
+const WarehouseDispatchPage = lazy(() => import('./app/warehouse/page'));
+const WarehouseIntakePage = lazy(() => import('./app/warehouse/intake/page'));
 const WarehouseInventoryMapPage = lazy(() => import('./app/warehouse/inventory/page'));
 const OutboundPickListPage = lazy(() => import('./app/warehouse/outbound/page'));
 const PrintableLabelsPage = lazy(() => import('./app/warehouse/labels/page'));
@@ -133,9 +134,12 @@ export default function App() {
               <Route path="/driver/job/:id" element={<DriverJobDetailPage />} />
             </Route>
 
-            {/* Warehouse Terminal */}
+            {/* Warehouse Operations Suite */}
             <Route element={<WarehouseLayout />}>
-              <Route path="/warehouse" element={<WarehouseIntakePage />} />
+              <Route path="/warehouse" element={<WarehouseDispatchPage />} />
+              <Route path="/warehouse/dispatch" element={<WarehouseDispatchPage />} />
+              <Route path="/warehouse/intake" element={<WarehouseIntakePage />} />
+              <Route path="/warehouse/scan" element={<WarehouseIntakePage />} />
               <Route path="/warehouse/inventory" element={<WarehouseInventoryMapPage />} />
               <Route path="/warehouse/outbound" element={<OutboundPickListPage />} />
               <Route path="/warehouse/labels" element={<PrintableLabelsPage />} />

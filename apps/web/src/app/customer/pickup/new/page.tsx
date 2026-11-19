@@ -87,10 +87,11 @@ export default function SchedulePickupCheckoutPage() {
         slotStartTime: slotTime.split(' - ')[0],
         slotEndTime: slotTime.split(' - ')[1],
         status: PickupStatus.BOOKED,
-        driverId: mockDb.drivers[0]?.id,
-        driverName: 'Ramesh Kumar (Pickup Lead)',
-        driverPhone: '+919876543211',
-        driverVehicleNumber: 'KA-01-EJ-4912',
+        driverId: null,
+        driverName: null,
+        driverPhone: null,
+        driverVehicleNumber: null,
+        driverVehicleType: null,
         pickupOtp,
         totalAmount: pricing.totalDueToday,
         monthlyStorage: pricing.monthlyRecurringTotal,
@@ -100,6 +101,9 @@ export default function SchedulePickupCheckoutPage() {
       };
 
       mockDb.pickupRequests.unshift(newBooking);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lootup_db_updated'));
+      }
       clearCart();
       setBookingConfirmed(newBooking);
     } catch (err) {
@@ -117,14 +121,14 @@ export default function SchedulePickupCheckoutPage() {
         </div>
 
         <div>
-          <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
-            Booking Confirmed
+          <span className="text-xs font-bold text-lootup-700 bg-lootup-50 px-3 py-1 rounded-full border border-lootup-200">
+            Sent to Warehouse Desk
           </span>
           <h1 id="main-content" tabIndex={-1} className="text-2xl font-semibold text-slate-900 mt-2 text-balance">
-            Pickup #{bookingConfirmed.bookingNumber} Scheduled!
+            Pickup #{bookingConfirmed.bookingNumber} Requested!
           </h1>
           <p className="text-xs text-slate-500 mt-1 text-pretty">
-            Confirmation sent via WhatsApp &amp; SMS to {bookingConfirmed.customerPhone}
+            Received by Warehouse Operations (WH-BLR-01 Indiranagar). Our shift lead is verifying your items and assigning an optimal driver &amp; vehicle.
           </p>
         </div>
 
@@ -137,7 +141,7 @@ export default function SchedulePickupCheckoutPage() {
             {bookingConfirmed.pickupOtp}
           </div>
           <span className="text-[11px] text-amber-800 text-pretty">
-            Share this 4-digit code with driver Ramesh only after your items are verified into the vehicle.
+            Keep this 4-digit code ready. Share it with your assigned driver only after your items are verified into the vehicle.
           </span>
         </div>
 
@@ -147,8 +151,14 @@ export default function SchedulePickupCheckoutPage() {
             <span className="font-bold text-slate-900">{bookingConfirmed.slotDate} ({bookingConfirmed.slotStartTime} - {bookingConfirmed.slotEndTime})</span>
           </div>
           <div className="flex justify-between text-slate-600">
-            <span>Assigned Driver:</span>
-            <span className="font-bold text-slate-900">{bookingConfirmed.driverName} ({bookingConfirmed.driverVehicleNumber})</span>
+            <span>Warehouse Status:</span>
+            <span className="font-bold text-amber-700 bg-amber-100/80 px-2 py-0.5 rounded text-[11px]">
+              WH Triage · Pending Driver Allocation
+            </span>
+          </div>
+          <div className="flex justify-between text-slate-600">
+            <span>Fulfillment Center:</span>
+            <span className="font-bold text-slate-900">WH-BLR-01 Indiranagar Central</span>
           </div>
           <div className="flex justify-between text-slate-600">
             <span>Amount Paid (1st Month + Pickup + GST):</span>
@@ -162,13 +172,13 @@ export default function SchedulePickupCheckoutPage() {
             className="flex-1 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-2 shadow transition-colors duration-150"
           >
             <Truck className="w-4 h-4" aria-hidden="true" />
-            <span>Track Pickup Live</span>
+            <span>Track Live Status</span>
           </SmartLink>
           <SmartLink
             href="/customer"
             className="flex-1 py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs flex items-center justify-center transition-colors duration-150"
           >
-            <span>Back to Dashboard</span>
+            Go to Customer Dashboard
           </SmartLink>
         </div>
       </div>

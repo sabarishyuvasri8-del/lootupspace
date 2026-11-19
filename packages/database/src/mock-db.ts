@@ -80,6 +80,34 @@ export class LootupMockDatabase {
       updatedAt: new Date().toISOString()
     };
 
+    const driverUser2 = {
+      id: 'user_drv_002',
+      phone: '+919876543222',
+      email: 'suresh.driver@lootup.space',
+      name: 'Suresh Nair (Express EV)',
+      role: UserRole.DRIVER,
+      status: UserStatus.ACTIVE,
+      kycStatus: KycStatus.VERIFIED,
+      referralCode: 'SURESH20',
+      avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+      createdAt: new Date('2026-02-01T08:00:00Z').toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    const driverUser3 = {
+      id: 'user_drv_003',
+      phone: '+919876543233',
+      email: 'vikram.driver@lootup.space',
+      name: 'Vikram Joshi (Heavy Cargo)',
+      role: UserRole.DRIVER,
+      status: UserStatus.ACTIVE,
+      kycStatus: KycStatus.VERIFIED,
+      referralCode: 'VIKRAM50',
+      avatarUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&auto=format&fit=crop&q=80',
+      createdAt: new Date('2026-02-15T08:00:00Z').toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
     const warehouseStaff = {
       id: DEMO_USERS.WAREHOUSE.id,
       phone: DEMO_USERS.WAREHOUSE.phone,
@@ -108,22 +136,59 @@ export class LootupMockDatabase {
       updatedAt: new Date().toISOString()
     };
 
-    this.users = [customer, driverUser, warehouseStaff, admin];
+    this.users = [customer, driverUser, driverUser2, driverUser3, warehouseStaff, admin];
 
-    // 2. Driver Profile
+    // 2. Driver Profiles
     this.drivers = [
       {
         id: 'drv_profile_001',
         userId: driverUser.id,
+        name: driverUser.name,
+        phone: driverUser.phone,
         vehicleType: VehicleType.MINI_TRUCK_TATA_ACE,
         vehicleNumber: 'KA-01-EJ-4912',
         licenseNumber: 'KA0120190038921',
+        cluster: 'Indiranagar & Central Hub',
         isAvailable: true,
         currentLat: 12.9782,
         currentLng: 77.6408,
         totalTripsDone: 142,
         ratingAverage: 4.9,
         createdAt: new Date('2026-01-10T09:00:00Z').toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: 'drv_profile_002',
+        userId: driverUser2.id,
+        name: driverUser2.name,
+        phone: driverUser2.phone,
+        vehicleType: VehicleType.THREE_WHEELER_EV,
+        vehicleNumber: 'KA-03-MG-7821',
+        licenseNumber: 'KA0320210041289',
+        cluster: 'Koramangala & HSR Layout',
+        isAvailable: true,
+        currentLat: 12.9352,
+        currentLng: 77.6245,
+        totalTripsDone: 98,
+        ratingAverage: 4.8,
+        createdAt: new Date('2026-02-01T08:00:00Z').toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: 'drv_profile_003',
+        userId: driverUser3.id,
+        name: driverUser3.name,
+        phone: driverUser3.phone,
+        vehicleType: VehicleType.MINI_TRUCK_TATA_ACE,
+        vehicleNumber: 'KA-04-TR-3390',
+        licenseNumber: 'KA0420180029810',
+        cluster: 'Whitefield & Outer Ring Road',
+        isAvailable: true,
+        currentLat: 12.9698,
+        currentLng: 77.7500,
+        totalTripsDone: 215,
+        ratingAverage: 5.0,
+        createdAt: new Date('2026-02-15T08:00:00Z').toISOString(),
         updatedAt: new Date().toISOString()
       }
     ];
@@ -520,6 +585,44 @@ export class LootupMockDatabase {
         items: [this.storageItems[0], this.storageItems[2], this.storageItems[3]],
         createdAt: new Date('2026-01-18T10:00:00Z').toISOString(),
         updatedAt: new Date('2026-01-20T14:50:00Z').toISOString()
+      },
+      {
+        id: 'pickup_003',
+        bookingNumber: 'LUP-PK-2026-0301',
+        userId: customer.id,
+        customerName: 'Ananya Deshmukh',
+        customerPhone: '+919876501928',
+        address: {
+          id: 'addr_003',
+          userId: customer.id,
+          label: 'Apartment (Koramangala)',
+          line1: 'Flat 5B, Prestige Acropolis, 20th Main',
+          line2: 'Near Forum Mall, 7th Block',
+          city: 'Bengaluru',
+          state: 'Karnataka',
+          pincode: '560095',
+          lat: 12.9352,
+          lng: 77.6245,
+          isDefault: false
+        },
+        slotDate: 'Tomorrow, Nov 20',
+        slotStartTime: '11:00 AM',
+        slotEndTime: '01:00 PM',
+        status: PickupStatus.BOOKED,
+        driverId: null,
+        driverName: null,
+        driverPhone: null,
+        driverVehicleNumber: null,
+        driverVehicleType: null,
+        pickupOtp: '5924',
+        totalAmount: 1499,
+        pickupFee: 149,
+        monthlyStorage: 1350,
+        commitmentMonths: 6,
+        items: [this.storageItems[0], this.storageItems[3]],
+        notes: 'Needs 2 large heavy cartons and bubble wrapping for monitors. Elevator available to 5th floor.',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       }
     ];
 
@@ -540,8 +643,27 @@ export class LootupMockDatabase {
         feeAmount: 149.0,
         itemIds: ['item_003'],
         items: [this.storageItems[2]],
-        notes: 'Returning legal books ahead of litigation review.',
+        notes: 'Returning legal books and litigation documents ahead of high court briefing.',
         createdAt: new Date('2026-11-08T18:00:00Z').toISOString(),
+        updatedAt: new Date().toISOString()
+      },
+      {
+        id: 'ret_002',
+        returnNumber: 'LUP-RT-2026-0034',
+        userId: customer.id,
+        customerName: customer.name,
+        customerPhone: customer.phone,
+        address: this.addresses[0],
+        slotDate: 'Tomorrow, Nov 20',
+        slotTime: '02:00 PM - 04:00 PM',
+        status: ReturnStatus.ITEMS_RETRIEVED,
+        driverId: null,
+        deliveryOtp: '3819',
+        feeAmount: 149.0,
+        itemIds: ['item_002'],
+        items: [this.storageItems[1]],
+        notes: 'Winter wardrobe retrieved from Bin B-02-R3-B4. Staged for outbound vehicle loading.',
+        createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       }
     ];
@@ -675,6 +797,77 @@ export class LootupMockDatabase {
         createdAt: new Date('2026-11-08T09:30:00Z').toISOString()
       }
     ];
+  }
+
+  // --- Warehouse & Driver Dispatch Operations ---
+
+  dispatchPickup(pickupId: string, driverId: string, supervisorNotes?: string): any {
+    const pickup = this.pickupRequests.find((p) => p.id === pickupId || p.bookingNumber === pickupId);
+    if (!pickup) return null;
+
+    const driver = this.drivers.find((d) => d.id === driverId) || this.drivers[0];
+    const driverUser = this.users.find((u) => u.id === driver.userId);
+
+    pickup.driverId = driver.id;
+    pickup.driverName = driverUser?.name || driver.name || 'Assigned Driver';
+    pickup.driverPhone = driverUser?.phone || driver.phone || '+919876543211';
+    pickup.driverVehicleNumber = driver.vehicleNumber;
+    pickup.driverVehicleType = driver.vehicleType;
+    pickup.status = PickupStatus.DRIVER_ASSIGNED;
+    if (supervisorNotes) {
+      pickup.notes = pickup.notes ? `${pickup.notes} [WH Dispatch: ${supervisorNotes}]` : `[WH Dispatch: ${supervisorNotes}]`;
+    }
+    pickup.updatedAt = new Date().toISOString();
+
+    this.auditLogs.unshift({
+      id: `audit_${Date.now()}`,
+      userId: DEMO_USERS.WAREHOUSE.id,
+      action: 'WAREHOUSE_PICKUP_DISPATCH',
+      resource: `PickupRequest:${pickup.id}`,
+      details: `Warehouse Shift Lead dispatched ${pickup.bookingNumber} to Driver ${pickup.driverName} (${pickup.driverVehicleNumber})`,
+      ipAddress: '192.168.1.101',
+      createdAt: new Date().toISOString()
+    });
+
+    return pickup;
+  }
+
+  dispatchReturn(returnId: string, driverId: string, supervisorNotes?: string): any {
+    const ret = this.returnRequests.find((r) => r.id === returnId || r.returnNumber === returnId);
+    if (!ret) return null;
+
+    const driver = this.drivers.find((d) => d.id === driverId) || this.drivers[0];
+    const driverUser = this.users.find((u) => u.id === driver.userId);
+
+    ret.driverId = driver.id;
+    ret.driverName = driverUser?.name || driver.name || 'Assigned Driver';
+    ret.driverPhone = driverUser?.phone || driver.phone || '+919876543211';
+    ret.status = ReturnStatus.DRIVER_ASSIGNED;
+    if (supervisorNotes) {
+      ret.notes = ret.notes ? `${ret.notes} [WH Dispatch: ${supervisorNotes}]` : `[WH Dispatch: ${supervisorNotes}]`;
+    }
+    ret.updatedAt = new Date().toISOString();
+
+    this.auditLogs.unshift({
+      id: `audit_${Date.now()}`,
+      userId: DEMO_USERS.WAREHOUSE.id,
+      action: 'WAREHOUSE_RETURN_DISPATCH',
+      resource: `ReturnRequest:${ret.id}`,
+      details: `Warehouse Shift Lead approved & dispatched return ${ret.returnNumber} to Driver ${ret.driverName}`,
+      ipAddress: '192.168.1.101',
+      createdAt: new Date().toISOString()
+    });
+
+    return ret;
+  }
+
+  retrieveReturnItems(returnId: string): any {
+    const ret = this.returnRequests.find((r) => r.id === returnId || r.returnNumber === returnId);
+    if (!ret) return null;
+
+    ret.status = ReturnStatus.ITEMS_RETRIEVED;
+    ret.updatedAt = new Date().toISOString();
+    return ret;
   }
 }
 

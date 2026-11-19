@@ -42,6 +42,13 @@ export default function DigitalInventoryPage() {
     }
   }, [selectedItemForModal]);
 
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const handleUpdate = () => setTick((t) => t + 1);
+    window.addEventListener('lootup_db_updated', handleUpdate);
+    return () => window.removeEventListener('lootup_db_updated', handleUpdate);
+  }, []);
+
   const customerItems = mockDb.storageItems.filter(
     (i) => i.userId === (user?.id || 'user_cust_001')
   );

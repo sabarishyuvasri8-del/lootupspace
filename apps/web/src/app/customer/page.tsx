@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../lib/auth-context';
 import { mockDb } from '@lootupspace/database';
-import { StorageItemStatus, PickupStatus } from '@lootupspace/shared';
+import { StorageItemStatus, PickupStatus, ReturnStatus } from '@lootupspace/shared';
 import { formatInr } from '../../lib/utils';
 import { SmartLink } from '../../components/SmartLink';
 import {
@@ -17,22 +17,33 @@ import {
   Tv,
   BookOpen,
   Bike,
-  FileText
+  FileText,
+  Warehouse
 } from 'lucide-react';
 
 export default function CustomerDashboardPage() {
   const { user } = useAuth();
+  const userId = user?.id || 'user_cust_001';
 
-  const customerItems = mockDb.storageItems.filter(
-    (i) => i.userId === (user?.id || 'user_cust_001')
-  );
+  const [, setTick] = useState(0);
 
+  useEffect(() => {
+    const handleUpdate = () => setTick((t) => t + 1);
+    window.addEventListener('lootup_db_updated', handleUpdate);
+    return () => window.removeEventListener('lootup_db_updated', handleUpdate);
+  }, []);
+
+  const customerItems = mockDb.storageItems.filter((i) => i.userId === userId);
   const storedItems = customerItems.filter((i) => i.status === StorageItemStatus.STORED);
   const totalCuFt = storedItems.reduce((acc, it) => acc + (it.cubicFeet || 2.0), 0);
   const monthlyCost = storedItems.reduce((acc, it) => acc + (it.monthlyStorageFeeInr || 399), 0);
 
   const activePickup = mockDb.pickupRequests.find(
-    (p) => p.userId === (user?.id || 'user_cust_001') && p.status !== PickupStatus.RECEIVED_AT_WAREHOUSE
+    (p) => p.userId === userId && p.status !== PickupStatus.RECEIVED_AT_WAREHOUSE
+  );
+
+  const activeReturn = mockDb.returnRequests.find(
+    (r) => r.userId === userId && r.status !== ReturnStatus.DELIVERED
   );
 
   const quickCategories = [
@@ -115,20 +126,26 @@ export default function CustomerDashboardPage() {
 
       {/* Active Pickup Notice */}
       {activePickup && (
-        <div className="bg-amber-50/70 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className={`rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border ${
+          !activePickup.driverId ? 'bg-amber-50/70 border-amber-200' : 'bg-emerald-50/60 border-emerald-200'
+        }`}>
           <div className="flex items-start gap-3">
-            <div className="p-2 rounded-lg bg-amber-100 text-amber-800 shrink-0" aria-hidden="true">
-              <Truck className="w-4 h-4" strokeWidth={1.5} />
+            <div className={`p-2 rounded-lg shrink-0 ${!activePickup.driverId ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`} aria-hidden="true">
+              {!activePickup.driverId ? <Warehouse className="w-4 h-4" strokeWidth={1.5} /> : <Truck className="w-4 h-4" strokeWidth={1.5} />}
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-mono text-amber-900 bg-amber-100 px-1.5 py-0.5 rounded">
-                  Pickup scheduled
+                <span className={`text-[11px] font-mono px-1.5 py-0.5 rounded font-medium ${
+                  !activePickup.driverId ? 'bg-amber-100 text-amber-900 border border-amber-200' : 'bg-emerald-100 text-emerald-900 border border-emerald-200'
+                }`}>
+                  {!activePickup.driverId ? 'Warehouse Review & Dispatch' : 'Driver Dispatched'}
                 </span>
                 <span className="text-xs font-mono text-slate-700">{activePickup.bookingNumber}</span>
               </div>
               <div className="text-xs font-medium text-slate-900 mt-1">
-                Driver assigned: {activePickup.driverName}
+                {activePickup.driverName
+                  ? `Assigned Driver: ${activePickup.driverName} (${activePickup.driverVehicleNumber || 'Tata Ace'})`
+                  : 'Fulfillment Center WH-BLR-01 inspecting items & scheduling driver'}
               </div>
               <div className="text-[11px] text-slate-600 mt-0.5">
                 Slot: {activePickup.slotDate} ({activePickup.slotStartTime} - {activePickup.slotEndTime}) · Handover OTP: <span className="font-mono font-medium text-slate-900">{activePickup.pickupOtp}</span>
@@ -140,7 +157,42 @@ export default function CustomerDashboardPage() {
             href={`/customer/tracking/${activePickup.id}`}
             className="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-medium hover:bg-slate-800 transition-colors duration-150 inline-flex items-center gap-1.5"
           >
-            <span>Live route tracking</span>
+            <span>{!activePickup.driverId ? 'Track status' : 'Live route tracking'}</span>
+            <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} aria-hidden="true" />
+          </SmartLink>
+        </div>
+      )}
+
+      {/* Active Return Notice */}
+      {activeReturn && (
+        <div className="bg-indigo-50/70 border border-indigo-200 rounded-xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <div className="p-2 rounded-lg bg-indigo-100 text-indigo-800 shrink-0" aria-hidden="true">
+              <RotateCcw className="w-4 h-4" strokeWidth={1.5} />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-mono bg-indigo-100 text-indigo-900 px-1.5 py-0.5 rounded font-medium border border-indigo-200">
+                  Return Order
+                </span>
+                <span className="text-xs font-mono text-slate-700">{activeReturn.returnNumber}</span>
+              </div>
+              <div className="text-xs font-medium text-slate-900 mt-1">
+                {activeReturn.driverName
+                  ? `Dispatched with Driver: ${activeReturn.driverName}`
+                  : 'Warehouse retrieving items from rack bins & assigning delivery driver'}
+              </div>
+              <div className="text-[11px] text-slate-600 mt-0.5">
+                Target Slot: {activeReturn.slotDate} ({activeReturn.slotTime}) · Delivery OTP: <span className="font-mono font-medium text-slate-900">{activeReturn.deliveryOtp}</span>
+              </div>
+            </div>
+          </div>
+
+          <SmartLink
+            href="/customer/inventory"
+            className="px-3 py-1.5 rounded-lg bg-indigo-900 text-white text-xs font-medium hover:bg-indigo-800 transition-colors duration-150 inline-flex items-center gap-1.5"
+          >
+            <span>View items</span>
             <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} aria-hidden="true" />
           </SmartLink>
         </div>

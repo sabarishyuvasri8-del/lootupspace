@@ -76,6 +76,10 @@ function DriverJobDetailContent() {
         });
       }
 
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('lootup_db_updated'));
+      }
+
       setCompleted(true);
     } catch (err: any) {
       setError(err.message || 'Handover verification failed');
@@ -96,16 +100,26 @@ function DriverJobDetailContent() {
           </h1>
           <p className="text-xs text-slate-300 mt-1 text-pretty">
             {isPickup
-              ? 'Items are in your vehicle and marked In-Transit. Proceed to Indiranagar Warehouse Hub.'
-              : 'Delivery complete! Return status updated.'}
+              ? 'Items are secured in your transit vehicle and marked In-Transit. Proceed to WH-BLR-01 Indiranagar for barcode scanning & bin placement.'
+              : 'Doorstep delivery complete! Recipient OTP verified.'}
           </p>
         </div>
-        <SmartLink
-          href="/driver"
-          className="w-full py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs shadow inline-flex items-center justify-center transition-colors duration-150"
-        >
-          Return to Jobs List
-        </SmartLink>
+        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+          <SmartLink
+            href="/driver"
+            className="flex-1 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold text-xs shadow inline-flex items-center justify-center transition-colors duration-150"
+          >
+            Return to Driver Manifest
+          </SmartLink>
+          {isPickup && (
+            <SmartLink
+              href="/warehouse/intake"
+              className="flex-1 py-3.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-semibold text-xs shadow inline-flex items-center justify-center transition-colors duration-150"
+            >
+              Open Warehouse Intake Scanner →
+            </SmartLink>
+          )}
+        </div>
       </div>
     );
   }
