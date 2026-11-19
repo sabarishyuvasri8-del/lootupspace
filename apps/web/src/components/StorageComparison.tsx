@@ -7,46 +7,45 @@ export function StorageComparison() {
 
   const comparisons = [
     {
-      feature: 'Doorstep pickup & transport',
-      lootup: 'Included in 2-hr slots. Professional captain arrives at your flat.',
-      traditional: 'You book local tempos, haggle on prices, and navigate traffic.'
+      feature: 'Doorstep pickup',
+      lootup: 'Included 2-hour doorstep collection',
+      traditional: 'Self-arranged tempo and traffic'
     },
     {
-      feature: 'Packing & heavy lifting',
-      lootup: 'Doorstep team assists with cartons, bubble wrap, and stair hauling.',
-      traditional: 'You pack, lift, and load all heavy boxes yourself.'
+      feature: 'Heavy lifting & boxes',
+      lootup: 'Cartons, bubble wrap, and lifting included',
+      traditional: 'Pack, lift, and haul boxes yourself'
     },
     {
-      feature: 'Digital inventory on your phone',
-      lootup: 'Every carton photographed & barcoded. View your vault anytime.',
-      traditional: 'Zero visibility. You forget what box contains which item.'
+      feature: 'Digital vault inventory',
+      lootup: 'Itemized photos and barcodes on your phone',
+      traditional: 'No inventory; easy to lose track'
     },
     {
-      feature: 'Retrieving just 1 single item',
-      lootup: '1-tap doorstep redelivery of any individual carton or all items.',
-      traditional: 'Must drive 30 km to an industrial godown and unpack everything.'
+      feature: 'Single-item return',
+      lootup: '1-tap return for any individual carton in 24–48h',
+      traditional: 'Drive to distant industrial godowns'
     },
     {
-      feature: 'Climate & pest control',
-      lootup: 'Continuous sensor monitoring (<55% RH), pest treatment & CCTV.',
-      traditional: 'Corrugated tin sheds with dampness and monsoon moisture risk.'
+      feature: 'Climate & security',
+      lootup: '<55% humidity control and 24/7 CCTV',
+      traditional: 'Tin sheds with monsoon moisture risk'
     },
     {
-      feature: 'Transit & storage insurance',
-      lootup: '₹10,000 complimentary cover included on every storage carton.',
-      traditional: 'Stored at your own risk with no formal damage coverage.'
+      feature: 'Insurance cover',
+      lootup: '₹10,000 complimentary cover per carton',
+      traditional: 'Stored at owner&apos;s risk'
     }
   ];
 
   return (
     <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
       <div className="p-6 sm:p-8 border-b border-slate-100">
-        <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Comparison</span>
-        <h2 id={headingId} className="text-2xl font-medium text-slate-900 tracking-tight mt-1 text-balance">
-          Why doorstep custody beats traditional self-storage
+        <h2 id={headingId} className="text-2xl font-medium text-slate-900 tracking-tight text-balance">
+          Lootupspace vs traditional self-storage
         </h2>
-        <p className="text-slate-600 text-sm mt-1 text-pretty">
-          Self-storage was built for American suburbs with cars. Lootupspace is built for dense Indian metro apartments.
+        <p className="text-slate-500 text-sm mt-1 text-pretty">
+          Doorstep custody built for Indian metro apartments.
         </p>
       </div>
 

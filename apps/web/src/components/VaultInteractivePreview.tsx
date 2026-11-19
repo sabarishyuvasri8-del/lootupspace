@@ -48,10 +48,7 @@ export function VaultInteractivePreview() {
       {/* Top Status Header */}
       <div className="px-5 py-3.5 bg-slate-950/90 border-b border-slate-800 flex items-center justify-between gap-2 flex-wrap">
         <div className="flex items-center gap-2.5">
-          <div className="relative flex items-center justify-center" aria-hidden="true">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 absolute animate-ping opacity-75"></span>
-          </div>
+          <span className="w-2 h-2 rounded-full bg-emerald-500" aria-hidden="true" />
           <span className="text-xs font-medium text-slate-200">Indiranagar Vault BLR-01</span>
           <span className="text-slate-700 hidden sm:inline" aria-hidden="true">|</span>
           <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono text-slate-400">

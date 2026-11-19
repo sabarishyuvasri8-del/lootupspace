@@ -43,27 +43,19 @@ function SectionPlaceholder({ heightClass }: { heightClass: string }) {
 const FAQS = [
   {
     q: 'What is the minimum storage commitment?',
-    a: 'The standard minimum commitment is 3 months. After 3 months, your plan automatically transitions to month-to-month billing with no lock-in. Longer upfront commitments of 6 months (5% discount) and 12 months (10% discount) are also available.'
-  },
-  {
-    q: 'What physical security measures protect my stored items?',
-    a: 'All Lootupspace facilities feature 24/7 continuous CCTV coverage with 90-day offsite recording, biometric access gates, fire suppression systems, active dehumidification (<55% RH), and barcode automated reconciliation. Vault bays are strictly closed to walk-in public access.'
+    a: '3 months minimum. After that, your plan transitions to month-to-month billing with no lock-in.'
   },
   {
     q: 'Can I retrieve just one single item instead of everything?',
-    a: 'Yes! That is the core advantage of Lootupspace. Every single carton, appliance, or furniture item receives an individual QR barcode and bin coordinate. You can request return of any specific item through your inventory screen, and our driver delivers it within 24 to 48 hours.'
+    a: 'Yes. Every box and item has its own barcode and photo in your digital vault. You can recall any single item to your doorstep in 24–48 hours.'
   },
   {
-    q: 'Are packing materials provided by Lootupspace?',
-    a: 'Yes. If you request packing materials during booking, our captain brings heavy-duty double-wall corrugated cartons (specifically sized for books, clothes, or appliances), bubble wrap, and tamper-evident security tape.'
+    q: 'What security and climate controls protect stored items?',
+    a: 'All facilities feature 24/7 CCTV with 90-day offsite backups, biometric access, and active dehumidification (<55% RH) to protect against monsoon moisture.'
   },
   {
-    q: 'What items cannot be stored?',
-    a: 'We do not accept perishable food items, hazardous chemicals or flammable goods, pressurized gas canisters, live animals or plants, firearms, illegal contraband, or jewelry and loose cash above declared insurance limits.'
-  },
-  {
-    q: 'Are GST tax invoices provided for businesses and startups?',
-    a: 'Yes. All invoices detail the 18% GST calculation under SAC code 996729 and can be downloaded as official PDF tax invoices from your billing tab for complete input tax credit (ITC) claims.'
+    q: 'Are packing materials provided?',
+    a: 'Yes. Our team brings heavy-duty double-wall cartons, bubble wrap, and tamper-evident security tape during pickup.'
   }
 ];
 
@@ -98,14 +90,9 @@ export default function HomePage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
               {/* Left Column: Core Value Proposition */}
               <div className="lg:col-span-7 space-y-6 animate-fade-in-up">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200/80 text-xs font-mono text-slate-700 shadow-xs">
-                  <span className="relative flex h-2 w-2" aria-hidden="true">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                  </span>
-                  <span>Active in Bengaluru · Mumbai · Chennai</span>
-                  <span className="text-slate-400" aria-hidden="true">|</span>
-                  <span className="text-slate-600">Pickups today: 28</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200/80 text-xs text-slate-600">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                  <span>Bengaluru · Mumbai · Chennai</span>
                 </div>
 
                 <h1
@@ -118,7 +105,7 @@ export default function HomePage() {
                 </h1>
 
                 <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl text-pretty">
-                  Flat rent in metro cities is too expensive to use for storing unused suitcases, winter quilts, extra desks, and seasonal clothes. We collect at your door, catalog every item with tamper barcodes, and hold it in climate vaults from <strong className="text-slate-900 font-semibold">₹199/month</strong>.
+                  Doorstep storage for things you don&apos;t need every day. We pick up, barcode each box, and hold it in secure climate vaults from <strong className="text-slate-900 font-semibold">₹199/month</strong>.
                 </p>
 
                 <div className="pt-1">
@@ -143,37 +130,25 @@ export default function HomePage() {
                 </div>
 
                 {/* 4 Concrete Trust Pillars */}
-                <div className="pt-8 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left">
-                  <div className="group">
-                    <div className="text-xs font-semibold text-slate-900 flex items-center gap-1.5 group-hover:text-lootup-600 transition-colors">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" aria-hidden="true" />
-                      <span>₹10,000 cover</span>
-                    </div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">Complimentary insurance</div>
+                <div className="pt-6 border-t border-slate-100 grid grid-cols-2 sm:grid-cols-4 gap-4 text-left text-xs font-medium text-slate-700">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" aria-hidden="true" />
+                    <span>₹10,000 cover</span>
                   </div>
 
-                  <div className="group">
-                    <div className="text-xs font-semibold text-slate-900 flex items-center gap-1.5 group-hover:text-lootup-600 transition-colors">
-                      <Thermometer className="w-3.5 h-3.5 text-lootup-600" aria-hidden="true" />
-                      <span>Climate vault</span>
-                    </div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">&lt;55% RH humidity guard</div>
+                  <div className="flex items-center gap-1.5">
+                    <Thermometer className="w-3.5 h-3.5 text-slate-500 shrink-0" aria-hidden="true" />
+                    <span>&lt;55% humidity guard</span>
                   </div>
 
-                  <div className="group">
-                    <div className="text-xs font-semibold text-slate-900 flex items-center gap-1.5 group-hover:text-lootup-600 transition-colors">
-                      <RotateCcw className="w-3.5 h-3.5 text-lootup-600" aria-hidden="true" />
-                      <span>Doorstep return</span>
-                    </div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">1-tap retrieval in 24 hrs</div>
+                  <div className="flex items-center gap-1.5">
+                    <RotateCcw className="w-3.5 h-3.5 text-slate-500 shrink-0" aria-hidden="true" />
+                    <span>24–48h return</span>
                   </div>
 
-                  <div className="group">
-                    <div className="text-xs font-semibold text-slate-900 flex items-center gap-1.5 group-hover:text-lootup-600 transition-colors">
-                      <FileText className="w-3.5 h-3.5 text-slate-700" aria-hidden="true" />
-                      <span>GST invoices</span>
-                    </div>
-                    <div className="text-[11px] text-slate-500 mt-0.5">SAC 996729 tax credit</div>
+                  <div className="flex items-center gap-1.5">
+                    <FileText className="w-3.5 h-3.5 text-slate-500 shrink-0" aria-hidden="true" />
+                    <span>18% GST invoices</span>
                   </div>
                 </div>
               </div>
@@ -202,83 +177,70 @@ export default function HomePage() {
             ========================================================================= */}
         <section className="cv-auto py-20 bg-white border-b border-slate-200/80">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-12">
-              <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">The Journey</span>
-              <h2 className="text-2xl sm:text-3xl font-medium text-slate-900 tracking-tight mt-1 text-balance">
-                How doorstep custody works
+            <div className="max-w-xl mb-10">
+              <h2 className="text-2xl sm:text-3xl font-medium text-slate-900 tracking-tight text-balance">
+                How it works
               </h2>
-              <p className="text-slate-600 text-sm mt-1 text-pretty">
-                From packing at your high-rise flat to individual item retrieval whenever you want something back.
+              <p className="text-slate-500 text-sm mt-1 text-pretty">
+                Doorstep pickup to secure vault custody and 24h return.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {/* Step 1 */}
-              <div className="bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 space-y-4 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md transition-[transform,border-color,box-shadow] duration-300 ease-out group">
+              <div className="bg-slate-50/70 rounded-xl p-5 border border-slate-200/80 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-900 shadow-xs group-hover:scale-110 group-hover:bg-lootup-50 transition-[transform,background-color] duration-300" aria-hidden="true">
-                    <Camera className="w-5 h-5 text-slate-800 group-hover:text-lootup-600 transition-colors" strokeWidth={1.5} />
+                  <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-800" aria-hidden="true">
+                    <Camera className="w-4 h-4" strokeWidth={1.5} />
                   </div>
-                  <span className="text-xs font-mono font-semibold text-slate-500">01</span>
+                  <span className="text-xs font-mono text-slate-400">01</span>
                 </div>
-                <h3 className="font-semibold text-slate-900 text-base">1. Photograph &amp; Estimate</h3>
+                <h3 className="font-semibold text-slate-900 text-sm">Photograph &amp; quote</h3>
                 <p className="text-slate-600 text-xs leading-relaxed text-pretty">
-                  Snap photos or enter box counts in the web app. The pricing math engine recommends the exact volume tier with transparent monthly pricing.
+                  Select box sizes or snap photos for an instant volume-based monthly rate.
                 </p>
-                <div className="text-[11px] font-mono text-lootup-700 bg-lootup-50 px-2.5 py-1 rounded border border-lootup-100 inline-block">
-                  Free packing boxes on request
-                </div>
               </div>
 
               {/* Step 2 */}
-              <div className="bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 space-y-4 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md transition-[transform,border-color,box-shadow] duration-300 ease-out group">
+              <div className="bg-slate-50/70 rounded-xl p-5 border border-slate-200/80 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-900 shadow-xs group-hover:scale-110 group-hover:bg-emerald-50 transition-[transform,background-color] duration-300" aria-hidden="true">
-                    <Truck className="w-5 h-5 text-slate-800 group-hover:text-emerald-600 transition-colors" strokeWidth={1.5} />
+                  <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-800" aria-hidden="true">
+                    <Truck className="w-4 h-4" strokeWidth={1.5} />
                   </div>
-                  <span className="text-xs font-mono font-semibold text-slate-500">02</span>
+                  <span className="text-xs font-mono text-slate-400">02</span>
                 </div>
-                <h3 className="font-semibold text-slate-900 text-base">2. Doorstep Handover &amp; Barcode</h3>
+                <h3 className="font-semibold text-slate-900 text-sm">Doorstep pickup</h3>
                 <p className="text-slate-600 text-xs leading-relaxed text-pretty">
-                  Choose a 2-hour window. Our background-verified captain arrives with double-wall cartons, seals items with tamper-evident tape, and generates your handover OTP.
+                  Choose a 2-hour window. Our team brings cartons, seals items with barcodes, and confirms via OTP.
                 </p>
-                <div className="text-[11px] font-mono text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded border border-emerald-100 inline-block">
-                  Serialized 3M security tape
-                </div>
               </div>
 
               {/* Step 3 */}
-              <div className="bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 space-y-4 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md transition-[transform,border-color,box-shadow] duration-300 ease-out group">
+              <div className="bg-slate-50/70 rounded-xl p-5 border border-slate-200/80 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-900 shadow-xs group-hover:scale-110 group-hover:bg-lootup-50 transition-[transform,background-color] duration-300" aria-hidden="true">
-                    <Package className="w-5 h-5 text-slate-800 group-hover:text-lootup-600 transition-colors" strokeWidth={1.5} />
+                  <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-800" aria-hidden="true">
+                    <Package className="w-4 h-4" strokeWidth={1.5} />
                   </div>
-                  <span className="text-xs font-mono font-semibold text-slate-500">03</span>
+                  <span className="text-xs font-mono text-slate-400">03</span>
                 </div>
-                <h3 className="font-semibold text-slate-900 text-base">3. Shelved in Climate Vault</h3>
+                <h3 className="font-semibold text-slate-900 text-sm">Climate vault</h3>
                 <p className="text-slate-600 text-xs leading-relaxed text-pretty">
-                  Items arrive at your city hub (Indiranagar / Bandra / OMR), pass weight and dimensions verification, and are locked into dedicated bin coordinates under 24/7 CCTV.
+                  Stored in dedicated bins under 24/7 CCTV with a digital photo inventory on your phone.
                 </p>
-                <div className="text-[11px] font-mono text-slate-700 bg-slate-100 px-2.5 py-1 rounded border border-slate-200 inline-block">
-                  Digital inventory on your phone
-                </div>
               </div>
 
               {/* Step 4 */}
-              <div className="bg-slate-50/80 rounded-2xl p-6 border border-slate-200/80 space-y-4 hover:border-slate-300 hover:-translate-y-1 hover:shadow-md transition-[transform,border-color,box-shadow] duration-300 ease-out group">
+              <div className="bg-slate-50/70 rounded-xl p-5 border border-slate-200/80 space-y-2.5">
                 <div className="flex items-center justify-between">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-900 shadow-xs group-hover:scale-110 group-hover:bg-amber-50 transition-[transform,background-color] duration-300" aria-hidden="true">
-                    <RotateCcw className="w-5 h-5 text-slate-800 group-hover:text-amber-600 transition-colors" strokeWidth={1.5} />
+                  <div className="w-8 h-8 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-slate-800" aria-hidden="true">
+                    <RotateCcw className="w-4 h-4" strokeWidth={1.5} />
                   </div>
-                  <span className="text-xs font-mono font-semibold text-slate-500">04</span>
+                  <span className="text-xs font-mono text-slate-400">04</span>
                 </div>
-                <h3 className="font-semibold text-slate-900 text-base">4. Return Any Single Item</h3>
+                <h3 className="font-semibold text-slate-900 text-sm">Return on demand</h3>
                 <p className="text-slate-600 text-xs leading-relaxed text-pretty">
-                  Need your winter jackets for a Manali trip, or just 1 carton of books? Tap &ldquo;Request Return&rdquo; in the web app. We deliver it to your address within 24 to 48 hours.
+                  Need any box back? Request it from your digital vault for delivery within 24–48 hours.
                 </p>
-                <div className="text-[11px] font-mono text-lootup-700 bg-lootup-50 px-2.5 py-1 rounded border border-lootup-100 inline-block">
-                  Deliver to any city address
-                </div>
               </div>
             </div>
           </div>
@@ -300,13 +262,12 @@ export default function HomePage() {
             ========================================================================= */}
         <section id="pricing-calculator" className="cv-auto-lg py-20 bg-white border-b border-slate-200/80 scroll-mt-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-8">
-              <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Transparent Rates</span>
-              <h2 className="text-2xl sm:text-3xl font-medium text-slate-900 tracking-tight mt-1 text-balance">
+            <div className="max-w-xl mb-8">
+              <h2 className="text-2xl sm:text-3xl font-medium text-slate-900 tracking-tight text-balance">
                 Estimate your monthly storage
               </h2>
-              <p className="text-slate-600 text-sm mt-1 text-pretty">
-                Volume-based billing with full breakdown of pickup, storage, insurance, and 18% GST input credit.
+              <p className="text-slate-500 text-sm mt-1 text-pretty">
+                Pickup, secure climate storage, insurance, and 18% GST input credit included.
               </p>
             </div>
             <Suspense fallback={<SectionPlaceholder heightClass="min-h-[38rem]" />}>
@@ -340,15 +301,14 @@ export default function HomePage() {
         {/* =========================================================================
             SEARCHABLE NATIVE FREQUENTLY ASKED QUESTIONS (<details name="faq">)
             ========================================================================= */}
-        <section className="cv-auto py-20 bg-white">
+        <section className="cv-auto py-16 bg-white">
           <div className="max-w-3xl mx-auto px-4 sm:px-6">
-            <div className="mb-10 text-center">
-              <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Clarity &amp; Policies</span>
-              <h2 className="text-2xl sm:text-3xl font-medium text-slate-900 tracking-tight mt-1 text-balance">
+            <div className="mb-8 text-center">
+              <h2 className="text-2xl sm:text-3xl font-medium text-slate-900 tracking-tight text-balance">
                 Frequently asked questions
               </h2>
               <p className="text-slate-500 text-sm mt-1 text-pretty">
-                Everything you need to know about packing, vault custody, insurance, and returns.
+                Key details on packing, vault custody, and 24h returns.
               </p>
             </div>
 
@@ -381,25 +341,19 @@ export default function HomePage() {
             FINAL HIGH-CONVERTING CTA BANNER
             ========================================================================= */}
         <section className="cv-auto bg-slate-950 text-white py-16 border-t border-slate-800">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-lootup-500/10 border border-lootup-500/30 text-lootup-400 text-xs font-mono">
-              <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Doorstep Storage in Bengaluru, Mumbai &amp; Chennai</span>
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-white leading-tight text-balance">
-              Stop paying expensive rent for unused stuff.<br />
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center space-y-5">
+            <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-white leading-tight text-balance">
               Reclaim your apartment today.
             </h2>
 
-            <p className="text-slate-400 text-sm sm:text-base max-w-xl mx-auto text-pretty">
-              Book a 2-hour collection slot. We provide cartons, seal items with tamper barcodes, and lock them in secure climate vaults.
+            <p className="text-slate-400 text-sm sm:text-base max-w-lg mx-auto text-pretty">
+              Doorstep collection, climate-controlled vault storage, and 24h returns from ₹199/month.
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
               <SmartLink
                 href="/customer/items/new"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-950 px-7 py-3.5 rounded-xl text-sm font-semibold transition-colors duration-200 active:scale-[0.98] shadow-sm hover:shadow"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-950 px-7 py-3 rounded-xl text-sm font-semibold transition-colors duration-200 active:scale-[0.98] shadow-sm hover:shadow"
               >
                 <span>Schedule pickup</span>
                 <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -407,14 +361,14 @@ export default function HomePage() {
 
               <a
                 href="#pricing-calculator"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 px-6 py-3.5 rounded-xl text-sm font-medium transition-colors duration-200 active:scale-[0.98]"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 px-6 py-3 rounded-xl text-sm font-medium transition-colors duration-200 active:scale-[0.98]"
               >
-                <span>Explore pricing calculator</span>
+                <span>Calculate rate</span>
               </a>
             </div>
 
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400 font-mono">
-              <span>No security deposit</span>
+            <div className="pt-3 flex flex-wrap items-center justify-center gap-5 text-xs text-slate-400 font-mono">
+              <span>No deposit</span>
               <span aria-hidden="true">&middot;</span>
               <span>₹10,000 cover included</span>
               <span aria-hidden="true">&middot;</span>

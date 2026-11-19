@@ -15,7 +15,7 @@ export function RealCustomerStories() {
       tag: 'Apartment Space Recovery',
       headline: 'We turned our cluttered spare room into a sunlit reading studio.',
       quote:
-        'Our 2BHK flat was suffocating under 4 heavy winter quilts, 3 large travel trolleys, and Diwali puja utensils used once a year. Storing them with Lootupspace took 20 minutes: the driver came with boxes, taped them with barcodes, and our floor was clear. Best ₹598/month we spend.',
+        'We cleared 4 winter quilts, suitcases, and festive utensils in 20 minutes. The team brought sturdy boxes, barcoded everything, and freed up our spare room. Best ₹598/month we spend.',
       itemsStored: '3 Heavy Wardrobe Boxes + 2 Luggage Trolleys (12.4 cu ft)',
       monthlyCost: '₹598/month',
       spaceGained: '18 sq ft floor space recovered',
@@ -28,7 +28,7 @@ export function RealCustomerStories() {
       tag: 'Lease Gap & Transition',
       headline: 'Saved ₹18,000 during our 3-week tenancy gap between apartments.',
       quote:
-        'Our lease expired on the 10th and our new flat was not ready until the 1st of next month. Packers & movers quoted an exorbitant daily detention fee. Lootupspace took 14 boxes and our dining table, stored them in their climate-controlled Powai vault, and delivered them to our new doorstep on schedule without a scratch.',
+        'Lootupspace stored 14 boxes and our dining table between leases in their Powai climate vault, then delivered everything to our new flat on schedule without a scratch.',
       itemsStored: 'Dining Set + 8 Double-wall Cartons + Monitor (28 cu ft)',
       monthlyCost: '₹1,690/month',
       spaceGained: 'Seamless doorstep transition',
@@ -39,9 +39,9 @@ export function RealCustomerStories() {
       role: 'Software Architect',
       locality: 'OMR Perungudi, Chennai',
       tag: 'Seasonal & Sports Gear',
-      headline: 'My expensive road bike and scuba kit are safe and dry through coastal monsoons.',
+      headline: 'My road bike and scuba kit are safe and dry through coastal monsoons.',
       quote:
-        'Salt air and monsoons in Chennai ruin bicycles and leather gear left on balconies. Having a 24/7 climate vault where humidity is kept below 50% gives total peace of mind. Whenever I have an outstation cycling weekend, I tap return on Friday and the bike is at my gate.',
+        'Storing my road bike and dive kit in a climate-controlled vault (<50% RH) protects them from Chennai coastal humidity. One tap on Friday and the bike is at my gate.',
       itemsStored: 'Trek Road Bike + Scuba Kitbag + 2 Tech Boxes (16 cu ft)',
       monthlyCost: '₹749/month',
       spaceGained: 'Protected from coastal rust & moisture',
@@ -69,10 +69,12 @@ export function RealCustomerStories() {
     <div className="bg-slate-900 text-white rounded-2xl border border-slate-800 shadow-sm overflow-hidden">
       <div className="p-6 sm:p-8 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-mono text-slate-400 uppercase tracking-wider">Real Case Studies</span>
-          <h2 className="text-2xl font-medium text-white tracking-tight mt-1 text-balance">
-            How urban residents live larger in metro apartments
+          <h2 className="text-2xl font-medium text-white tracking-tight text-balance">
+            Customer stories
           </h2>
+          <p className="text-slate-400 text-sm mt-1 text-pretty">
+            How residents reclaim apartment space across Bengaluru, Mumbai, and Chennai.
+          </p>
         </div>
 
         {/* WAI-ARIA Story Selector Tabs */}

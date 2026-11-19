@@ -158,15 +158,11 @@ export function SpaceRecoveryCalculator() {
       <div className="p-6 sm:p-8 border-b border-slate-800 bg-slate-950/60">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono mb-2">
-              <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Interactive Space Reclaimer</span>
-            </div>
             <h2 className="text-xl sm:text-2xl font-medium tracking-tight text-white text-balance">
-              Calculate the floor space and rent you get back
+              Calculate recovered space &amp; rent
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-xl text-pretty">
-              Tap items taking up dead space in your apartment. See your reclaimed square footage and monthly financial gain in real time.
+              Tap items taking up space to see reclaimed square footage and monthly savings.
             </p>
           </div>
 
@@ -202,8 +198,8 @@ export function SpaceRecoveryCalculator() {
       <div className="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left: Item Picker Grid */}
         <div className="lg:col-span-7 space-y-3">
-          <div className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-2">
-            Select items taking up space in your flat:
+          <div className="text-xs font-medium text-slate-400 mb-2">
+            Select items in your flat:
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {ITEMS_CATALOG.map((item) => {

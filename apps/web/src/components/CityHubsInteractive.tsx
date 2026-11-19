@@ -97,12 +97,11 @@ export function CityHubsInteractive() {
       {/* Header and City Selectors */}
       <div className="p-6 sm:p-8 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">Service Coverage</span>
-          <h2 className="text-2xl font-medium text-slate-900 tracking-tight mt-1 text-balance">
-            Active metro vaults &amp; daily collection routes
+          <h2 className="text-2xl font-medium text-slate-900 tracking-tight text-balance">
+            Active city vaults
           </h2>
-          <p className="text-slate-600 text-sm mt-1 text-pretty">
-            Centrally located custody hubs in each city ensuring rapid 24-hr retrieval to your doorstep.
+          <p className="text-slate-500 text-sm mt-1 text-pretty">
+            Daily collection routes with 24-hr retrieval to your doorstep.
           </p>
         </div>
 
