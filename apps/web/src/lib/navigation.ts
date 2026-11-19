@@ -114,9 +114,23 @@ export function getRouteTitle(pathname: string): string {
 export function useRouter(): AppRouterInstance {
   const navigate = useNavigate();
 
+  const navigateWithTransition = (href: string, options?: { replace?: boolean }) => {
+    if (
+      typeof document !== 'undefined' &&
+      'startViewTransition' in document &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      (document as any).startViewTransition(() => {
+        navigate(href, options);
+      });
+    } else {
+      navigate(href, options);
+    }
+  };
+
   return {
-    push: (href: string) => navigate(href),
-    replace: (href: string) => navigate(href, { replace: true }),
+    push: (href: string) => navigateWithTransition(href),
+    replace: (href: string) => navigateWithTransition(href, { replace: true }),
     back: () => navigate(-1),
     forward: () => navigate(1),
     refresh: () => window.location.reload(),

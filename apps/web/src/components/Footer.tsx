@@ -130,19 +130,19 @@ export function Footer() {
               Connect &amp; Security
             </h2>
             <div className="flex items-center gap-3 text-slate-400">
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="Lootupspace on Twitter" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-colors">
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Lootupspace on Twitter" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-colors">
                 <Twitter className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Lootupspace on Instagram" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-colors">
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Lootupspace on Instagram" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-colors">
                 <Instagram className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" aria-label="Lootupspace on LinkedIn" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-colors">
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="Lootupspace on LinkedIn" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-colors">
                 <Linkedin className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
-              <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="Lootupspace on YouTube" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-colors">
+              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="Lootupspace on YouTube" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-white hover:border-slate-700 transition-colors">
                 <Youtube className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
-              <a href="https://wa.me" target="_blank" rel="noreferrer" aria-label="WhatsApp Concierge" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-emerald-400 hover:border-slate-700 transition-colors">
+              <a href="https://wa.me" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Concierge" className="p-2 rounded-lg bg-slate-900 border border-slate-800 hover:text-emerald-400 hover:border-slate-700 transition-colors">
                 <MessageCircle className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             </div>
